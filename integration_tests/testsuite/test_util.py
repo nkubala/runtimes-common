@@ -37,6 +37,7 @@ CUSTOM_LOGGING_ENDPOINT = '/logging_custom'
 MONITORING_ENDPOINT = '/monitoring'
 EXCEPTION_ENDPOINT = '/exception'
 CUSTOM_ENDPOINT = '/custom'
+DEBUG_ENDPOINT = '/debug'
 
 METRIC_PREFIX = 'custom.googleapis.com/{0}'
 METRIC_TIMEOUT = 60  # seconds

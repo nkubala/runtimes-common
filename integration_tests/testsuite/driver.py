@@ -21,6 +21,7 @@ import unittest
 
 from deploy_app import deploy_app
 import test_custom
+import test_debug
 import test_exception
 import test_logging_standard
 import test_logging_custom
@@ -63,6 +64,10 @@ def _main():
                         action='store_false',
                         dest='custom',
                         help='Flag to skip custom integration tests')
+    parser.add_argument('--skip-debug-tests',
+                        action='store_false',
+                        dest='debug',
+                        help='Flag to skip debugging tests')
     parser.add_argument('--url', '-u',
                         help='URL where deployed app is ' +
                         'exposed (if applicable)')
@@ -116,6 +121,9 @@ def _test_app(base_url, args):
 
     if args.custom:
         suite.addTest(test_custom.TestCustom(base_url))
+        
+    if args.debug:
+        suite.addTest(test_debug.TestDebug(base_url))
 
     return not unittest.TextTestRunner(verbosity=4).run(suite).wasSuccessful()
 
