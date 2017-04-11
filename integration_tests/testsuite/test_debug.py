@@ -14,7 +14,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from apiclient.discovery import build
+import json
 import logging
+import time
 import unittest
 
 import test_util
@@ -27,9 +30,47 @@ class TestDebug(unittest.TestCase):
         unittest.TestCase.__init__(self)
 
     def runTest(self):
+
+        dbg_service = build('clouddebugger', 'v2')
+        debugger = dbg_service.debugger()
+        debuggees_service = debugger.debuggees()
+        debuggees = debuggees_service.list(clientVersion='google.com/python/v2',
+                                           includeInactive=False,
+                                           project='787876332324',
+                                           x__xgafv='2').execute()
+
+        print json.dumps(debuggees, indent=2)
+
+        bp_service = debuggees_service.breakpoints()
+
+        bp_payload = {
+            'location': {
+                'path': 'server.py',
+                'line': 240
+            }
+        }
+
+        debuggee_list = debuggees.get('debuggees', [])
+        for debuggee in debuggee_list:
+            dId = debuggee.get('id')
+            bp_service.set(debuggeeId=dId,
+                           body=bp_payload,
+                           clientVersion='google.com/python/v2').execute()
+
+        time.sleep(5)
         output, response_code = test_util._get(self._url)
         self.assertEquals(response_code, 0,
                           'Error encountered inside sample application!')
+        time.sleep(5)
 
-        logging.info(output)
+        for debuggee in debuggee_list:
+            dId = debuggee.get('id')
+            active_breakpoints = bp_service.list(debuggeeId=dId,
+                                                 stripResults=False,
+                                                 includeInactive=False,
+                                                 clientVersion='google.com/python/v2',
+                                                 x__xgafv='2').execute()
 
+            print json.dumps(active_breakpoints, indent=2)
+
+        # logging.info(output)
