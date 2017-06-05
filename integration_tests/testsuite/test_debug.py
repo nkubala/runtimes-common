@@ -14,11 +14,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from apiclient.discovery import build
 import json
 import logging
 import time
 import unittest
+
+from apiclient.discovery import build
 
 import test_util
 
@@ -58,7 +59,7 @@ class TestDebug(unittest.TestCase):
                            clientVersion='google.com/python/v2').execute()
 
         time.sleep(5)
-        output, response_code = test_util._get(self._url)
+        output, response_code = test_util.get(self._url)
         self.assertEquals(response_code, 0,
                           'Error encountered inside sample application!')
         time.sleep(5)

@@ -101,7 +101,7 @@ def _main():
 
 
 def _test_app(base_url, args):
-    logging.info('Starting app test with base url {0}'.format(base_url))
+    logging.info('Starting app test with base url %s', base_url)
 
     suite = unittest.TestSuite()
 
@@ -109,19 +109,14 @@ def _test_app(base_url, args):
 
     if args.standard_logging:
         suite.addTest(test_logging_standard.TestStandardLogging(base_url))
-
     if args.custom_logging:
         suite.addTest(test_logging_custom.TestCustomLogging(base_url))
-
     if args.monitoring:
         suite.addTest(test_monitoring.TestMonitoring(base_url))
-
     if args.exception:
         suite.addTest(test_exception.TestException(base_url))
-
     if args.custom:
         suite.addTest(test_custom.TestCustom(base_url))
-        
     if args.debug:
         suite.addTest(test_debug.TestDebug(base_url))
 
