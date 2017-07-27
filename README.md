@@ -1,6 +1,6 @@
 runtimes-common
 =============
 
-Common tools and scripts for building GCP runtimes, yo.
+Common tools and scripts for building GCP runtimes.
 
 
