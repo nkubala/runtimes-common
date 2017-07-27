@@ -9,10 +9,8 @@ users=(${AUTHORIZED_USERS})
 key_prefix_length=12
 key_length=16
 
-i=1
 for user in ${users[@]}
 do
-  echo "$i - $user"
   # Import the public key
   gpg --import $KOKORO_GFILE_DIR/$user.asc
 
@@ -21,7 +19,6 @@ do
   key=${full_key_line:$key_prefix_length:$key_length}
 
   echo "trusted-key 0x${key}" >> ~/.gnupg/gpg.conf
-  i=$i+1
 done
 
 cd github/runtimes-common
