@@ -2,17 +2,15 @@
 
 set -ex
 
-# Pull down authorized public keys and add them as trusted
-users=(${AUTHORIZED_USERS})
-
 # prefixes are of the form "pub   2048D/"
 key_prefix_length=12
 key_length=16
 
-for user in ${users[@]}
+for keyfile in $KOKORO_GFILE_DIR/*.asc
 do
   # Import the public key
-  gpg --import $KOKORO_GFILE_DIR/$user.asc
+  gpg --import $keyfile
+  user=$(basename $keyfile .asc)
 
   # Add it to the set of trusted keys
   full_key_line=$(gpg --list-keys --keyid-format LONG $user | grep pub)
